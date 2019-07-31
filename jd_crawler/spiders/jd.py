@@ -10,4 +10,5 @@ class JdSpider(scrapy.Spider):
 
     def parse(self, response):
         text = response.text
+        print('='*30)
         print(text)
