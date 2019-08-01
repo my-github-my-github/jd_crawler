@@ -46,7 +46,7 @@ class JdSpider(scrapy.Spider):
         text = response.text
         skuid = response.url.split("/")[-1].replace('.html','')
         commentVersion = re.findall(r'commentVersion:\'(\d+)\'',text)[0]
-        for x in range(0,100):
+        for x in range(0,1):
             url = base_comment_url%(commentVersion,skuid,x)
             yield scrapy.Request(url=url,callback=self.save_json_data)
 
