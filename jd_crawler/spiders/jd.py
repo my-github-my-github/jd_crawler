@@ -16,8 +16,8 @@ class JdSpider(scrapy.Spider):
 
     def parse(self, response):
         formdata = {
-            'loginname':'18735417848',
-            'nloginpwd':'ZFE.014789'
+            'loginname':'yourusername',
+            'nloginpwd':'yourpassword'
         }
         yield scrapy.FormRequest.from_response(response,formdata=formdata,formid='formlogin',callback=self.parse_page)
 
