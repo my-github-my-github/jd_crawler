@@ -7,11 +7,11 @@
 
 import xlwt
 import xlrd
+from xlutils.copy import copy
 
 
 class JdCrawlerPipeline(object):
 
-    nrows = 1
 
     def process_item(self, item, spider):
         fields = ['id', 'topped', 'guid', 'content', 'creationTime', 'isTop', 'referenceId', 'referenceImage',
@@ -23,15 +23,12 @@ class JdCrawlerPipeline(object):
                 'userLevelName', 'plusAvailable', 'productSales', 'mobileVersion', 'aesPin', 'officialsStatus',
                 'excellent', 'recommend', 'userLevelColor', 'userClientShow', 'isMobile', 'days', 'afterDays']
         workbook = xlrd.open_workbook('comments.xls')
-        sheet = workbook.sheet_by_index(0)
+        rsheet = workbook.sheet_by_index(0)
+        nrows = rsheet.nrows
+        wb = copy(workbook)
+        sheet = wb.get_sheet(0)
         for index,field in enumerate(fields):
-            sheet.put_cell(self.nrows,index,xlrd.XL_CELL_TEXT,item[field],None)
-        self.nrows += 1
+            sheet.write(nrows,index,label = str(item[field]))
+        wb.save('comments.xls')
 
-        wwb = xlwt.Workbook(encoding='utf-8')
-        wsheet = wwb.add_sheet('comments')
-        for row in range(sheet.nrows):
-            for col in range(sheet.ncols):
-                wsheet.write(row,col,str(sheet.cell_value(row,col)))
-        wwb.save('newComments.xls')
         return item
